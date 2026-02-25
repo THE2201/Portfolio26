@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abel Portfolio</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+      defer
+    ></script>
+    <script>
+      tailwind.config = {
+        darkMode: "media",
+      };
+    </script>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-white text-gray-800 dark:bg-black dark:text-gray-100"
+    x-data="app()"
+    x-init="init()"
+    @scroll.window="onScroll"
+  >
+    <!-- Navbar -->
+    <header
+      :class="{
+      'py-8 bg-transparent': !scrolled,
+      'py-4 bg-white dark:bg-black shadow': scrolled
+    }"
+      class="fixed top-0 w-full z-50 transition-all duration-300 ease-in-out"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center">
+          <!-- Logo de portafolio -->
+          <div class="text-2xl font-bold">
+            <a
+              href="#home"
+              class="hover:text-green-600 flex items-center space-x-2"
+            >
+              <svg viewBox="0 0 24 24" class="w-6 h-6 icon flat-color">
+                <path
+                  d="M20,4H18.41l-1.7-1.71A1,1,0,0,0,16,2H8a1,1,0,0,0-.71.29L5.59,4H4A2,2,0,0,0,2,6V20a2,2,0,0,0,2,2H20a2,2,0,0,0,2-2V6A2,2,0,0,0,20,4Z"
+                  fill="black"
+                  stroke="white"
+                  stroke-width="0.5"
+                />
+                <path
+                  d="M18.41,4,16,10,12,7.29l4.68-5,0,0ZM5.59,4,8,10l4-2.71-4.68-5,0,0Z"
+                  fill="green"
+                  stroke="white"
+                  stroke-width="0.5"
+                />
+              </svg>
+              <span>Portafolio</span>
+            </a>
+          </div>
+
+          <!-- Modo escritorio navbar -->
+          <nav class="hidden md:flex space-x-6">
+            <template x-for="link in links" :key="link.id">
+              <a
+                :href="`#${link.id}`"
+                :class="activeSection === link.id ? 'text-green-600 font-semibold' : 'hover:text-gray-400'"
+                class="transition"
+                x-text="link.label"
+              ></a>
+            </template>
+          </nav>
+
+          <!-- Alternar movil navbar -->
+          <div class="md:hidden">
+            <button @click="open = !open" class="w-6 h-6 relative">
+              <svg
+                x-show="!open"
+                class="absolute inset-0 w-6 h-6 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+              <svg
+                x-show="open"
+                class="absolute inset-0 w-6 h-6 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Nav Menu -->
+      <div
+        x-show="open"
+        @click.away="open = false"
+        class="md:hidden bg-white dark:bg-black mt-4 px-8 py-4 space-y-4"
+      >
+        <template x-for="link in links" :key="link.id">
+          <a
+            :href="`#${link.id}`"
+            class="block text-right"
+            x-text="link.label"
+            @click="open = false"
+          ></a>
+        </template>
+      </div>
+    </header>
+
+    <!-- Script para Alpine -->
+    <script>
+      function app() {
+        return {
+          scrolled: false,
+          open: false,
+          activeSection: "home",
+          links: [
+            { id: "home", label: "Home" },
+            { id: "about", label: "About" },
+            { id: "education", label: "Education" },
+            { id: "projects", label: "Projects" },
+            { id: "contact", label: "Contact" },
+          ],
+          init() {
+            this.scrolled = window.scrollY > 10;
+            this.onScroll();
+          },
+          onScroll() {
+            this.scrolled = window.scrollY > 10;
+            for (let link of this.links) {
+              const el = document.getElementById(link.id);
+              if (el && el.getBoundingClientRect().top <= 100) {
+                this.activeSection = link.id;
+              }
+            }
+          },
+
+          education: [
+            {
+              title: "Ingeniería Informática - Universidad UTH",
+              description:
+                "Estudios universitarios redes, seguridad, desarollo, IoT, Arquitectura, Bases de datos, Cloud",
+              date: "2021 - 2026",
+            },
+            {
+              title: "Certificación Full Stack Developer",
+              description: "Curso intensivo de desarrollo web con MERN Stack.",
+              date: "2021",
+            },
+            {
+              title: "Certificacion Java Oracle (3 Niveles)",
+              description:
+                "Certificaciones Oracle en Java fundamentals, foundations y programming.",
+              date: "2023",
+            },
+            {
+              title: "NodeJS",
+              description: "Certificacion NodeJS para backend",
+              date: "2025",
+            },
+            {
+              title: "AWS Certification",
+              description: "Certificacion para manejar Cloud mediante AWS",
+              date: "2025",
+            },
+          ],
+        };
+      }
+    </script>
+    <!-- Home Section -->
+    <section
+      id="home"
+      x-data="carousel()"
+      x-init="start()"
+      x-bind:style="scrolled ? 'padding-top: 4rem' : 'padding-top: 6rem'"
+      class="min-h-screen relative"
+    >
+      <div class="absolute inset-0 z-0 overflow-hidden">
+        <template x-for="(image, index) in images" :key="index">
+          <div
+            x-show="currentIndex === index"
+            x-transition:enter="transition ease-out duration-700"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-500"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            class="absolute inset-0 w-full h-full"
+          >
+            <img
+              :src="image"
+              alt="Gallery Image"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </template>
+
+        <div class="absolute top-0 left-0 w-full h-40 z-10 pointer-events-none">
+          <!-- Light mode gradient -->
+          <div
+            class="w-full h-full bg-gradient-to-b from-white/80 to-transparent dark:hidden"
+          ></div>
+          <!-- Dark mode gradient -->
+          <div
+            class="w-full h-full bg-gradient-to-b from-black/80 to-transparent hidden dark:block"
+          ></div>
+        </div>
+        <!-- doble para mejor vista -->
+        <div
+          class="absolute top-100 left-100 w-full h-40 z-10 pointer-events-none"
+        >
+          <!-- Light mode gradient -->
+          <div
+            class="w-full h-full bg-gradient-to-b from-white/80 to-transparent dark:hidden"
+          ></div>
+          <!-- Dark mode gradient -->
+          <div
+            class="w-full h-full bg-gradient-to-b from-black/80 to-transparent hidden dark:block"
+          ></div>
+        </div>
+      </div>
+
+      <div
+        class="absolute bottom-20 right-0 z-10 m-6 bg-black bg-opacity-60 text-white p-6 rounded-lg max-w-md text-right"
+      >
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-400">
+          Abel Solorzano
+        </h1>
+        <p class="mt-2 text-sm md:text-base">
+          Utilizando la tecnologia para facilitar tareas y comunicarnos de forma
+          precisa.
+        </p>
+      </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="about" class="py-20 bg-gray-50 dark:bg-neutral-900">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <h2 class="text-1xl font-semibold mb-0 text-green-500">
+          Acerca de perfil
+        </h2>
+        <h2 class="text-3xl font-semibold mb-4">Ingeniero en sistemas</h2>
+
+        <p class="text-lg text-gray-600 dark:text-gray-300">
+          Pasante ingenieria en sistemas, ultimo año, manejo lo que se
+          pleanteaba en la universidad, lo practico y funcional... Mas alla de
+          toda la teoria. Mi fortaleza es la comunicacion para obtener los
+          resultados simples sin explicar tanto tecnicismo, ese me lo guardo en
+          mi cabeza.
+        </p>
+
+        <a
+          href="https://github.com/THE2201"
+          target="_blank"
+          class="relative inline-block border-2 dark:border-white border-black dark:text-white text-black font-bold bg-transparent px-6 py-3 rounded transition duration-300 hover:bg-purple-600 hover:scale-105 m-5 active:scale-90 overflow-hidden"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="absolute inset-0 w-full h-full text-white opacity-40 z-0"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
+      0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
+      1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
+      0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
+      .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
+      0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
+      0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span class="relative z-10">Github</span>
+        </a>
+
+        <a
+          href="/docs/AbelErnestoCV25.pdf"
+          type="application/pdf"
+          target="_blank"
+          class="relative inline-block border-2 dark:border-white border-black dark:text-white text-black font-bold bg-transparent px-6 py-3 rounded transition duration-300 hover:bg-gray-300 hover:text-black hover:scale-105 m-5 active:scale-90 overflow-hidden"
+        >
+          <!-- Document SVG in background -->
+          <svg
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            class="absolute inset-0 w-full h-full text-white opacity-40 z-0"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M6.75 3A2.625 2.625 0 0 0 4.125 5.625v12.75A2.625 2.625 0 0 0 6.75 21h10.125A2.625 2.625 0 0 0 19.5 18.375V9l-5.625-6H6.75ZM12 9.75a.75.75 0 0 0-.75-.75H8.25a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 .75-.75Zm-.75 2.25a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5h3Zm2.25 3a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+
+          <!-- Foreground Text -->
+          <span class="relative z-10">Resume</span>
+        </a>
+      </div>
+    </section>
+
+    <section id="education" class="py-20 dark:bg-neutral-900">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-1xl font-semibold mb-0 text-green-500 text-center">
+          Certs & Achievements
+        </h2>
+        <h2 class="text-3xl font-semibold mb-16 text-center">Educación</h2>
+
+        <!-- Timeline Container -->
+        <div class="relative">
+          <!-- Vertical Line -->
+          <div
+            class="absolute left-1/2 transform -translate-x-1/2 h-full border-l-4 dark:border-white border-gray-500"
+          ></div>
+
+          <template x-for="(item, index) in education" :key="item.title">
+            <div
+              class="mb-16 flex justify-between items-center w-full"
+              x-data="{ visible: false }"
+              x-init="
+              const observer = new IntersectionObserver(([entry]) => {
+                if (entry.isIntersecting) visible = true;
+              }, { threshold: 0.1 });
+              observer.observe($el);
+            "
+            >
+              <!-- Left Side Content -->
+              <div
+                class="w-5/12"
+                :class="{ 'order-1': index % 2 === 0, 'order-2': index % 2 !== 0 }"
+                x-show="visible"
+                :class="index % 2 === 0 ? 'animate-slide-left' : 'animate-slide-right'"
+              >
+                <div
+                  class="bg-gray-200 dark:bg-black p-6 rounded-lg shadow-md border-4 border-white"
+                >
+                  <h3
+                    class="text-xl font-bold text-green-600"
+                    x-text="item.title"
+                  ></h3>
+                  <p
+                    class="text-sm text-gray-600 dark:text-gray-300 mt-2"
+                    x-text="item.description"
+                  ></p>
+                  <span
+                    class="text-xs text-gray-400 mt-1 block"
+                    x-text="item.date"
+                  ></span>
+                </div>
+              </div>
+
+              <!-- Circulo -->
+              <div
+                class="z-10 flex items-center justify-center w-8 h-8 bg-green-600 rounded-full border-4 border-white dark:border-white absolute left-1/2 transform -translate-x-1/2"
+              ></div>
+
+              <!-- Right Side Empty (Spacer) -->
+              <div
+                class="w-5/12"
+                :class="{ 'order-2': index % 2 === 0, 'order-1': index % 2 !== 0 }"
+              ></div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-gray-100 dark:bg-black">
+      <h2 class="text-1xl font-semibold mb-0 text-green-500 text-center">
+        Mobile & desktop
+      </h2>
+      <h2 class="text-3xl font-semibold mb-8 text-center">Projects</h2>
+
+      <!-- Responsive Grid Wrapper -->
+      <div
+        class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4"
+      >
+        <!-- Card 1 -->
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+          <img
+            src="images/on1.jpg"
+            alt="Video Music Player"
+            class="w-full h-auto"
+          />
+          <hr class="border-t border-gray-700" />
+          <div class="p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">
+              VM Player Full Stack App
+            </h2>
+
+            <div
+              class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
+            >
+              <p class="text-gray-600 mb-4 text-base">
+                Aplicación para subir y compartir música y videos, crear grupos
+                y listas de reproducción, editar información de usuario.
+              </p>
+              <!-- Item 1 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Android Studio
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Java
+              </div>
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                JSON
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Firebase
+              </div>
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                MySQL
+              </div>
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                PHP API
+              </div>
+            </div>
+            <a
+              href="https://github.com/THE2201"
+              target="_blank"
+              class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 hover:text-blue-400 transition"
+            >
+              <svg viewBox="0 0 24 24" fill="purple" class="size-6">
+                <path
+                  fill-rule="evenodd"
+                  d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
+      0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
+      1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
+      0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
+      .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
+      0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
+      0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+          <img src="images/on2.jpg" alt="Libreria" class="w-full h-auto" />
+          <hr class="border-t border-gray-300" />
+          <div class="p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">
+              Manejo de Libreria
+            </h2>
+
+            <div
+              class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
+            >
+              <p class="text-gray-600 mb-4 text-base">
+                Sistema de control de alquiler de libros, biblioteca de libros
+              </p>
+              <!-- Item 1 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                CSS
+              </div>
+
+              <!-- Item 2 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                JS
+              </div>
+
+              <!-- Item 3 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                PHP
+              </div>
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                API
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                MySQL
+              </div>
+            </div>
+            <a
+              href="https://github.com/THE2201"
+              target="_blank"
+              class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 hover:text-blue-400 transition"
+            >
+              <svg viewBox="0 0 24 24" fill="purple" class="size-6">
+                <path
+                  fill-rule="evenodd"
+                  d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
+      0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
+      1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
+      0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
+      .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
+      0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
+      0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- You can add more cards here as needed -->
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+          <img src="images/pj1.png" alt="Libreria" class="w-full h-auto" />
+          <hr class="border-t border-gray-300" />
+          <div class="p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">
+              Pagina informativa farmacia
+            </h2>
+
+            <div
+              class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
+            >
+              <p class="text-gray-600 mb-4 text-base">
+                Pagina de informacion, landing page, mi primera pagina
+                desplegada con una idea de diseño responsive. Conexion a base de
+                datos SQL para recibir datos de formulario de contacto
+              </p>
+              <!-- Item 1 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                HTML
+              </div>
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                CSS
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                JS
+              </div>
+              <!-- Item 2 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Hosting
+              </div>
+            </div>
+            <a
+              href="https://bodefarma.rf.gd/?i=1"
+              target="_blank"
+              class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 transition"
+            >
+              <svg
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1"
+                stroke="cyan"
+                class="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+          <img src="images/on2.jpg" alt="Libreria" class="w-full h-auto" />
+          <hr class="border-t border-gray-300" />
+          <div class="p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">
+              Software Hotel Recepción
+            </h2>
+            <div
+              class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
+            >
+              <p class="text-gray-600 mb-4 text-base">
+                Control de reservaciones y habitaciones de hotel, cancelaciones
+                y reprogramaciones.
+              </p>
+              <!-- Item 1 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                JAVA Desktop
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                MariaDB
+              </div>
+            </div>
+
+            <a
+              href="https://github.com/THE2201"
+              target="_blank"
+              class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 hover:text-blue-400 transition"
+            >
+              <svg viewBox="0 0 24 24" fill="purple" class="size-6">
+                <path
+                  fill-rule="evenodd"
+                  d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
+      0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
+      1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
+      0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
+      .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
+      0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
+      0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+          <img src="images/on2.jpg" alt="Libreria" class="w-full h-auto" />
+          <hr class="border-t border-gray-300" />
+          <div class="p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">
+              Preaching Editor
+            </h2>
+            <div
+              class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
+            >
+              <p class="text-gray-600 mb-4 text-base">
+                App to handle speach and preachings based on topics, subtopics,
+                and ideas and dates.
+              </p>
+              <!-- Item 1 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                React Native
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                MariaDB
+              </div>
+            </div>
+
+            <a
+              href="https://github.com/THE2201"
+              target="_blank"
+              class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 hover:text-blue-400 transition"
+            >
+              <svg viewBox="0 0 24 24" fill="purple" class="size-6">
+                <path
+                  fill-rule="evenodd"
+                  d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
+      0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
+      1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
+      0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
+      .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
+      0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
+      0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+          <img src="images/on2.jpg" alt="Libreria" class="w-full h-auto" />
+          <hr class="border-t border-gray-300" />
+          <div class="p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">
+              Dashboard Manager
+            </h2>
+
+            <div
+              class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
+            >
+              <p class="text-gray-600 mb-4 text-base">
+                Inscripciones, manejo de pagos, landing y dashboard
+              </p>
+              <!-- Item 2 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                JS
+              </div>
+
+              <!-- Item 1 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Tailwind
+              </div>
+
+              <!-- Item 3 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                PHP API
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                AWS
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Mariadb
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Linux Server
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Apache
+              </div>
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Composer
+              </div>
+            </div>
+            <a
+              href="https://github.com/THE2201"
+              target="_blank"
+              class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 hover:text-blue-400 transition"
+            >
+              <svg viewBox="0 0 24 24" fill="purple" class="size-6">
+                <path
+                  fill-rule="evenodd"
+                  d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
+            0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
+            1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
+            0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
+            .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
+            0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
+            0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+          <img src="images/on2.jpg" alt="Libreria" class="w-full h-auto" />
+          <hr class="border-t border-gray-300" />
+          <div class="p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">
+              Company Job handler
+            </h2>
+
+            <div
+              class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
+            >
+              <p class="text-gray-600 mb-4 text-base">
+                Envio, publicacion de ofertas laborales en empresa, recepcion de
+                candidatos y curriculum.
+              </p>
+              <!-- Item 2 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                React Native
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                JS
+              </div>
+
+              <!-- Item 1 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Tailwind
+              </div>
+
+              <!-- Item 3 -->
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                PHP API
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                AWS
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Mariadb
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Linux Server
+              </div>
+
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Apache
+              </div>
+              <div
+                class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
+              >
+                <svg
+                  class="w-5 h-5 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
+                  />
+                </svg>
+                Composer
+              </div>
+            </div>
+            <a
+              href="https://github.com/THE2201"
+              target="_blank"
+              class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 hover:text-blue-400 transition"
+            >
+              <svg viewBox="0 0 24 24" fill="purple" class="size-6">
+                <path
+                  fill-rule="evenodd"
+                  d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
+            0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
+            1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
+            0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
+            .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
+            0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
+            0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-100 dark:bg-neutral-900">
+      <div
+        class="max-w-7xl mx-auto px-4 flex flex-col-reverse lg:flex-row items-center gap-8"
+      >
+        <!-- Contact Form -->
+        <div class="w-full lg:w-1/2">
+          <h2 class="text-4xl font-semibold text-right lg:text-right mb-6">
+            Ubicacion y contacto
+          </h2>
+
+          <h2 class="text-1xl text-right lg:text-right mb-6 text-orange-600">
+            Siguatepeque Comayagua, Honduras - CA
+          </h2>
+
+          <a href="mailto:abelernesto2201@gmail.com">
+            <h2 class="text-2xl text-right lg:text-right mb-6 text-gray-400">
+              abelernesto2201@<span class="text-blue-500">g</span
+              ><span class="text-red-500">m</span
+              ><span class="text-yellow-600">a</span
+              ><span class="text-blue-500">i</span
+              ><span class="text-green-600">l</span>.com
+            </h2>
+          </a>
+
+          <a href="tel:+50496507838">
+            <h2 class="text-1 xl text-right lg:text-right mb-6 text-gray-400">
+              (504) 9650-7838
+            </h2>
+          </a>
+        </div>
+
+        <!-- Google Map -->
+        <div class="w-full lg:w-1/2">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d33542.608860230204!2d-87.83599375!3d14.597951899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f6595a3b6d8afe3%3A0x3dab665e36cbd548!2sSiguatepeque%2C%20Comayagua!5e1!3m2!1ses-419!2shn!4v1750182107519!5m2!1ses-419!2shn"
+            width="100%"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="rounded shadow"
+          ></iframe>
+        </div>
+      </div>
+
+      <div
+        class="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-8 mt-5"
+      ></div>
+    </section>
+
+    <footer
+      class="bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 py-10 mt-16"
+    >
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <!-- Social Icons -->
+        <div class="flex justify-center space-x-6 mb-6">
+          <!-- Facebook -->
+          <a
+            href="#"
+            aria-label="Facebook"
+            class="hover:text-blue-600 transition"
+          >
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 
+          12c0 4.99 3.66 9.12 8.44 
+          9.88v-6.99H7.9v-2.89h2.54V9.41c0-2.5 
+          1.49-3.89 3.77-3.89 1.09 0 2.23.2 
+          2.23.2v2.45h-1.25c-1.23 0-1.61.76-1.61 
+          1.54v1.86h2.74l-.44 2.89h-2.3v6.99C18.34 
+          21.12 22 16.99 22 12z"
+              />
+            </svg>
+          </a>
+
+          <!-- Instagram -->
+          <a
+            href="#"
+            aria-label="Instagram"
+            class="hover:text-pink-500 transition"
+          >
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2.2c3.2 0 3.584.012 4.85.07 1.17.056 1.96.24 
+          2.41.403a4.79 4.79 0 0 1 
+          1.73 1.13c.492.492.865 1.083 
+          1.13 1.73.163.45.347 1.24.403 
+          2.41.058 1.27.07 1.65.07 
+          4.85s-.012 3.584-.07 
+          4.85c-.056 1.17-.24 1.96-.403 
+          2.41a4.79 4.79 0 0 1-1.13 
+          1.73 4.79 4.79 0 0 1-1.73 
+          1.13c-.45.163-1.24.347-2.41.403-1.27.058-1.65.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.056-1.96-.24-2.41-.403a4.79 4.79 0 0 1-1.73-1.13 4.79 4.79 0 0 1-1.13-1.73c-.163-.45-.347-1.24-.403-2.41C2.212 15.584 2.2 15.2 2.2 12s.012-3.584.07-4.85c.056-1.17.24-1.96.403-2.41a4.79 4.79 0 0 1 1.13-1.73 4.79 4.79 0 0 1 1.73-1.13c.45-.163 1.24-.347 2.41-.403C8.416 2.212 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.507.012-4.737.068-.96.045-1.482.21-1.83.35a3.04 3.04 0 0 0-1.11.726 3.04 3.04 0 0 0-.726 1.11c-.14.348-.305.87-.35 1.83-.056 1.23-.068 1.587-.068 4.737s.012 3.507.068 4.737c.045.96.21 1.482.35 1.83.18.45.423.836.726 1.11.348.14.87.305 1.83.35 1.23.056 1.587.068 4.737.068s3.507-.012 4.737-.068c.96-.045 1.482-.21 1.83-.35a3.04 3.04 0 0 0 1.11-.726 3.04 3.04 0 0 0 .726-1.11c.14-.348.305-.87.35-1.83.056-1.23.068-1.587.068-4.737s-.012-3.507-.068-4.737c-.045-.96-.21-1.482-.35-1.83a3.04 3.04 0 0 0-.726-1.11 3.04 3.04 0 0 0-1.11-.726c-.348-.14-.87-.305-1.83-.35-1.23-.056-1.587-.068-4.737-.068zM12 5.838A6.162 6.162 0 1 0 12 18.162 6.162 6.162 0 1 0 12 5.838zm0 10.125a3.963 3.963 0 1 1 0-7.926 3.963 3.963 0 0 1 0 7.926zm5.925-11.14a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"
+              />
+            </svg>
+          </a>
+
+          <!-- Google Maps -->
+          <a href="#" aria-label="Maps" class="hover:text-green-600 transition">
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2C8.14 2 5 5.14 5 
+          9c0 5.25 7 13 7 
+          13s7-7.75 7-13c0-3.86-3.14-7-7-7zm0 
+          9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 
+          6.5 12 6.5 14.5 7.62 14.5 9 
+          13.38 11.5 12 11.5z"
+              />
+            </svg>
+          </a>
+
+          <!-- Phone -->
+          <a
+            href="tel:+1234567890"
+            aria-label="Phone"
+            class="hover:text-blue-400 transition"
+          >
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M6.62 10.79a15.093 
+          15.093 0 0 0 6.59 6.59l2.2-2.2c.27-.27.67-.36 
+          1.02-.24 1.12.37 2.33.57 
+          3.57.57.55 0 1 .45 1 
+          1v3.5c0 .55-.45 1-1 
+          1C10.07 21 3 13.93 3 
+          5.5c0-.55.45-1 1-1H7.5c.55 0 
+          1 .45 1 1 0 1.25.2 2.45.57 
+          3.57.11.35.03.74-.25 1.02l-2.2 
+          2.2z"
+              />
+            </svg>
+          </a>
+
+          <!-- Mail -->
+          <a
+            href="mailto:contact@.org"
+            aria-label="Email"
+            class="hover:text-red-400 transition"
+          >
+            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M20 4H4c-1.1 0-2 .9-2 
+          2v12c0 1.1.9 2 2 
+          2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 
+          4-8 5-8-5V6l8 5 8-5v2z"
+              />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Footer Text -->
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          &copy; 2025 Abel Portfolio. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Carousel JS -->
+    <script>
+      function carousel() {
+        return {
+          currentIndex: 0,
+          images: ["./images/on2.jpg", "./images/on3.jpg", "./images/on4.jpg"],
+          start() {
+            setInterval(() => {
+              this.currentIndex = (this.currentIndex + 1) % this.images.length;
+            }, 3000);
+          },
+        };
+      }
+    </script>
+  </body>
+</html>
