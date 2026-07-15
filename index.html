@@ -1,36 +1,377 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Abel Portfolio</title>
+    <title>Abel Solorzano · Portfolio</title>
+    <meta name="description" content="Abel Solorzano, Systems Engineering student and full-stack developer. Cloud, data analysis and mobile development." />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <script
-      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
-      defer
-    ></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
     <script>
       tailwind.config = {
-        darkMode: "media",
+        theme: {
+          extend: {
+            colors: {
+              ink: "#0B0D0E",
+              panel: "#121514",
+              paper: "#F2F0EB",
+              paperdim: "#E7E3D9",
+              forest: "#3D7A5C",
+              forestdeep: "#1C3B2E",
+              gold: "#C9A24B",
+              rust: "#B5502F",
+            },
+            fontFamily: {
+              display: ["Space Grotesk", "sans-serif"],
+              body: ["IBM Plex Sans", "sans-serif"],
+              mono: ["IBM Plex Mono", "monospace"],
+            },
+          },
+        },
       };
     </script>
+
     <style>
       html {
         scroll-behavior: smooth;
+      }
+      body {
+        font-family: "IBM Plex Sans", sans-serif;
+      }
+      .font-display {
+        font-family: "Space Grotesk", sans-serif;
+      }
+      .font-mono {
+        font-family: "IBM Plex Mono", monospace;
+      }
+      ::selection {
+        background: #c9a24b;
+        color: #0b0d0e;
+      }
+      [x-cloak] {
+        display: none !important;
+      }
+      .grain::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        pointer-events: none;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+      .rail-link {
+        position: relative;
+      }
+      .rail-link::before {
+        content: "";
+        position: absolute;
+        left: -1.15rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: #c9a24b;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+      .rail-link.is-active::before {
+        opacity: 1;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+      .fade-in {
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .fade-in.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .card-hover {
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-4px);
       }
     </style>
   </head>
 
   <body
-    class="bg-white text-gray-800 dark:bg-black dark:text-gray-100"
+    class="bg-ink text-paper grain antialiased"
     x-data="app()"
     x-init="init()"
     @scroll.window="onScroll"
   >
+    <script>
+      function app() {
+        return {
+          scrolled: false,
+          open: false,
+          activeSection: "home",
+          lang: "es",
+          pageVisible: true,
+          skillTab: "cloud",
+
+          translations: {
+            en: {
+              portf: "Abel Solorzano",
+              nav: ["Home", "About", "Education", "Skills", "Projects", "Contact"],
+              title: "Systems Engineer",
+              eyebrowAbout: "Who I am",
+              about:
+                "Computer Engineering student in my final year. Currently serving as a financial Data Analyst.",
+              resume: "Resume",
+              github: "Github",
+              moto: "Using technology to make procedures easier, and to provide accurate, reliable data that's easy to understand.",
+              eyebrowEdu: "Certifications & achievements",
+              education: "Education",
+              eyebrowSkills: "Stack",
+              skills: "Technical skills",
+              skillsSub: "Tools and platforms I use across cloud, data and mobile work.",
+              eyebrowProjects: "Mobile & desktop",
+              projects: "Projects",
+              viewCode: "View code",
+              viewLive: "View live",
+              eyebrowContact: "Get in touch",
+              contactTitle: "Location & contact",
+              footerNote: "Built from scratch, deployed by hand.",
+              skillCats: { cloud: "Cloud & Infra", data: "Data Analysis", mobile: "Mobile Dev" },
+            },
+            es: {
+              portf: "Abel Solorzano",
+              nav: ["Inicio", "Perfil", "Educación", "Habilidades", "Proyectos", "Contacto"],
+              title: "Ingeniero en Sistemas",
+              eyebrowAbout: "Perfil profesional",
+              about:
+                "Pasante de ingeniería en sistemas en último año. Actualmente ejerciendo como analista de datos financieros.",
+              resume: "Currículum",
+              github: "Github",
+              moto: "Utilizando la tecnología para agilizar procesos y proveer datos precisos, simples de entender.",
+              eyebrowEdu: "Certificaciones y logros",
+              education: "Educación",
+              eyebrowSkills: "Stack",
+              skills: "Habilidades técnicas",
+              skillsSub: "Herramientas y plataformas que uso en cloud, datos y desarrollo móvil.",
+              eyebrowProjects: "Móvil y escritorio",
+              projects: "Proyectos",
+              viewCode: "Ver código",
+              viewLive: "Ver en vivo",
+              eyebrowContact: "Contacto",
+              contactTitle: "Ubicación y contacto",
+              footerNote: "Construido desde cero, desplegado a mano.",
+              skillCats: { cloud: "Cloud e Infra", data: "Análisis de datos", mobile: "Desarrollo móvil" },
+            },
+          },
+
+          education: [
+            {
+              title: "Ingeniería Informática · Universidad UTH",
+              description:
+                "Estudios universitarios en redes, seguridad, desarrollo, IoT, arquitectura, bases de datos y cloud.",
+              date: "2021 - 2026",
+            },
+            {
+              title: "Certificación Full Stack Developer",
+              description: "Curso intensivo de desarrollo web con MERN Stack.",
+              date: "2021",
+            },
+            {
+              title: "Certificación Java Oracle (3 niveles)",
+              description:
+                "Certificaciones Oracle en Java fundamentals, foundations y programming.",
+              date: "2023",
+            },
+            {
+              title: "Node.js",
+              description: "Certificación Node.js para backend.",
+              date: "2025",
+            },
+            {
+              title: "AWS Certification",
+              description: "Certificación para manejar Cloud mediante AWS.",
+              date: "2025",
+            },
+          ],
+
+          skillGroups: {
+            cloud: [
+              { name: "AWS", level: 3 },
+              { name: "GCP", level: 2 },
+              { name: "REST APIs", level: 4 },
+              { name: "Linux", level: 3 },
+              { name: "SQL", level: 4 },
+            ],
+            data: [
+              { name: "Power BI", level: 3 },
+              { name: "Python", level: 3 },
+              { name: "Excel", level: 4 },
+            ],
+            mobile: [
+              { name: "Android Studio", level: 3 },
+              { name: "Java", level: 4 },
+              { name: "React Native", level: 3 },
+            ],
+          },
+
+          projects: [
+            {
+              image: "images/on1.jpg",
+              title: "VM Player Full Stack App",
+              descEs:
+                "Aplicación para subir y compartir música y videos, crear grupos y listas de reproducción, editar información de usuario.",
+              descEn:
+                "App to upload and share music and videos, create groups and playlists, and edit user profile info.",
+              tags: ["Android Studio", "Java", "JSON", "Firebase", "MySQL", "PHP API"],
+              link: "https://github.com/THE2201",
+              kind: "code",
+            },
+            {
+              image: "images/on2.jpg",
+              title: "Manejo de Librería",
+              descEs: "Sistema de control de alquiler de libros, biblioteca de libros.",
+              descEn: "Book rental control system for a library.",
+              tags: ["CSS", "JS", "PHP", "API", "MySQL"],
+              link: "https://github.com/THE2201",
+              kind: "code",
+            },
+            {
+              image: "images/pj1.png",
+              title: "Página Informativa Farmacia",
+              descEs:
+                "Landing page informativa, mi primera página desplegada con diseño responsive. Conexión a base de datos SQL para recibir datos del formulario de contacto.",
+              descEn:
+                "Informational landing page, my first deployed site with a responsive design. Connected to a SQL database to receive contact form submissions.",
+              tags: ["HTML", "CSS", "JS", "Hosting"],
+              link: "https://bodefarma.rf.gd/?i=1",
+              kind: "live",
+            },
+            {
+              image: "images/on2.jpg",
+              title: "Software Hotel Recepción",
+              descEs:
+                "Control de reservaciones y habitaciones de hotel, cancelaciones y reprogramaciones.",
+              descEn: "Hotel reservation and room management, cancellations and rebooking.",
+              tags: ["Java Desktop", "MariaDB"],
+              link: "https://github.com/THE2201",
+              kind: "code",
+            },
+            {
+              image: "images/on2.jpg",
+              title: "Preaching Editor",
+              descEs:
+                "App para manejar discursos y prédicas por temas, subtemas, ideas y fechas.",
+              descEn: "App to handle speeches and preachings by topic, subtopic, idea and date.",
+              tags: ["React Native", "MariaDB"],
+              link: "https://github.com/THE2201",
+              kind: "code",
+            },
+            {
+              image: "images/on2.jpg",
+              title: "Dashboard Manager",
+              descEs: "Inscripciones, manejo de pagos, landing y dashboard.",
+              descEn: "Enrollments, payment handling, landing page and dashboard.",
+              tags: ["JS", "Tailwind", "PHP API", "AWS", "MariaDB", "Linux Server", "Apache", "Composer"],
+              link: "https://github.com/THE2201",
+              kind: "code",
+            },
+          ],
+
+          links: [],
+
+          init() {
+            this.detectLanguage();
+            this.setLinks();
+            this.onScroll();
+            this.$nextTick(() => this.setupReveal());
+          },
+
+          detectLanguage() {
+            const saved = localStorage.getItem("lang");
+            if (saved) {
+              this.lang = saved;
+            } else {
+              const browserLang = navigator.language.slice(0, 2);
+              this.lang = browserLang === "es" ? "es" : "en";
+            }
+          },
+
+          toggleLanguage() {
+            this.pageVisible = false;
+            setTimeout(() => {
+              this.lang = this.lang === "es" ? "en" : "es";
+              localStorage.setItem("lang", this.lang);
+              this.setLinks();
+              this.pageVisible = true;
+            }, 250);
+          },
+
+          setLinks() {
+            const t = this.translations[this.lang].nav;
+            this.links = [
+              { id: "home", label: t[0] },
+              { id: "about", label: t[1] },
+              { id: "education", label: t[2] },
+              { id: "skills", label: t[3] },
+              { id: "projects", label: t[4] },
+              { id: "contact", label: t[5] },
+            ];
+          },
+
+          t(key) {
+            return this.translations[this.lang][key];
+          },
+
+          projectDesc(p) {
+            return this.lang === "es" ? p.descEs : p.descEn;
+          },
+
+          onScroll() {
+            this.scrolled = window.scrollY > 10;
+            for (let link of this.links) {
+              const el = document.getElementById(link.id);
+              if (el && el.getBoundingClientRect().top <= 140) {
+                this.activeSection = link.id;
+              }
+            }
+          },
+
+          setupReveal() {
+            const observer = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                  }
+                });
+              },
+              { threshold: 0.12 }
+            );
+            document.querySelectorAll(".fade-in").forEach((el) => observer.observe(el));
+          },
+        };
+      }
+    </script>
+
     <div
       x-show="pageVisible"
       x-transition:enter="transition-opacity duration-500"
@@ -40,1394 +381,344 @@
       x-transition:leave-start="opacity-100"
       x-transition:leave-end="opacity-0"
     >
-      <!-- Navbar -->
+      <!-- Header -->
       <header
-        :class="{
-      'py-8 bg-transparent': !scrolled,
-      'py-4 bg-white dark:bg-black shadow': scrolled
-    }"
-        class="fixed top-0 w-full z-50 transition-all duration-300 ease-in-out"
+        :class="scrolled ? 'py-3 bg-ink/90 backdrop-blur border-white/10' : 'py-6 bg-transparent border-transparent'"
+        class="fixed top-0 w-full z-50 transition-all duration-300 ease-in-out border-b"
       >
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
           <div class="flex justify-between items-center">
-            <!-- Logo de portafolio -->
-            <div class="text-2xl font-bold">
-              <a
-                href="#home"
-                class="hover:text-green-600 flex items-center space-x-2"
-              >
-                <svg viewBox="0 0 24 24" class="w-6 h-6 icon flat-color">
-                  <path
-                    d="M20,4H18.41l-1.7-1.71A1,1,0,0,0,16,2H8a1,1,0,0,0-.71.29L5.59,4H4A2,2,0,0,0,2,6V20a2,2,0,0,0,2,2H20a2,2,0,0,0,2-2V6A2,2,0,0,0,20,4Z"
-                    fill="black"
-                    stroke="white"
-                    stroke-width="0.5"
-                  />
-                  <path
-                    d="M18.41,4,16,10,12,7.29l4.68-5,0,0ZM5.59,4,8,10l4-2.71-4.68-5,0,0Z"
-                    fill="green"
-                    stroke="white"
-                    stroke-width="0.5"
-                  />
-                </svg>
-                <span x-text="t('portf')"></span>
-              </a>
-            </div>
+            <a href="#home" class="flex items-center gap-2 group">
+              <svg viewBox="0 0 24 24" class="w-5 h-5 text-gold group-hover:rotate-6 transition-transform">
+                <path fill="currentColor" d="M12 2 2 7l10 5 10-5-10-5Zm0 7L2 14l10 5 10-5-10-5Z" opacity="0.85" />
+              </svg>
+              <span class="font-display font-semibold tracking-tight text-paper" x-text="t('portf')"></span>
+            </a>
 
-            <!-- Modo escritorio navbar -->
-            <nav class="hidden md:flex space-x-6">
+            <nav class="hidden md:flex items-center gap-8 font-mono text-[13px] uppercase tracking-wide">
               <template x-for="link in links" :key="link.id">
                 <a
                   :href="`#${link.id}`"
-                  :class="activeSection === link.id ? 'text-green-600 font-semibold' : 'hover:text-gray-400'"
-                  class="transition"
+                  :class="activeSection === link.id ? 'is-active text-gold' : 'text-paper/60 hover:text-paper'"
+                  class="rail-link transition-colors"
                   x-text="link.label"
                 ></a>
               </template>
               <button
                 @click="toggleLanguage()"
-                class="border px-3 py-1 rounded text-sm hover:bg-green-600 hover:text-white transition"
+                class="border border-white/20 px-3 py-1 text-paper/80 hover:border-gold hover:text-gold transition-colors"
               >
                 <span x-text="lang === 'es' ? 'EN' : 'ES'"></span>
               </button>
             </nav>
 
-            <!-- Alternar movil navbar -->
-            <div class="md:hidden">
-              <button @click="open = !open" class="w-6 h-6 relative">
-                <svg
-                  x-show="!open"
-                  class="absolute inset-0 w-6 h-6 text-green-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-                <svg
-                  x-show="open"
-                  class="absolute inset-0 w-6 h-6 text-green-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
+            <button @click="open = !open" class="md:hidden w-6 h-6 relative text-paper">
+              <svg x-show="!open" class="absolute inset-0 w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+              <svg x-show="open" x-cloak class="absolute inset-0 w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
 
-        <!-- Mobile Nav Menu -->
         <div
           x-show="open"
+          x-cloak
           @click.away="open = false"
-          class="md:hidden bg-white dark:bg-black mt-4 px-8 py-4 space-y-4"
+          x-transition
+          class="md:hidden bg-ink border-t border-white/10 mt-4 px-6 py-5 space-y-4 font-mono text-sm uppercase tracking-wide"
         >
           <template x-for="link in links" :key="link.id">
             <a
               :href="`#${link.id}`"
-              class="block text-right"
+              class="block text-paper/80"
               x-text="link.label"
               @click="open = false"
             ></a>
           </template>
-          <button
-            @click="toggleLanguage()"
-            class="block w-1/2 text-start border p-2 rounded"
-          >
-            <span
-              x-text="lang === 'es' ? 'Switch to English' : 'Cambiar a Español'"
-            ></span>
+          <button @click="toggleLanguage()" class="block w-1/2 text-start border border-white/20 px-3 py-2">
+            <span x-text="lang === 'es' ? 'Switch to English' : 'Cambiar a Español'"></span>
           </button>
         </div>
       </header>
 
-      <!-- Script para Alpine -->
+      <!-- Home -->
+      <section id="home" x-data="carousel()" x-init="start()" class="relative min-h-screen flex items-end pb-24 pt-32">
+        <div class="absolute inset-0 z-0 overflow-hidden">
+          <template x-for="(image, index) in images" :key="index">
+            <div
+              x-show="currentIndex === index"
+              x-transition:enter="transition ease-out duration-1000"
+              x-transition:enter-start="opacity-0 scale-105"
+              x-transition:enter-end="opacity-100 scale-100"
+              x-transition:leave="transition ease-in duration-700"
+              x-transition:leave-start="opacity-100"
+              x-transition:leave-end="opacity-0"
+              class="absolute inset-0 w-full h-full"
+            >
+              <img :src="image" alt="" class="w-full h-full object-cover" />
+            </div>
+          </template>
+          <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/20"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-ink/80 via-transparent to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 w-full">
+          <div class="max-w-2xl">
+            <p class="font-mono text-xs uppercase tracking-[0.25em] text-gold mb-5">Siguatepeque, Honduras</p>
+            <h1 class="font-display text-5xl sm:text-6xl md:text-7xl font-semibold leading-[0.98] text-paper">
+              Abel<br />Solorzano
+            </h1>
+            <p x-text="t('moto')" class="mt-6 text-lg text-paper/70 max-w-lg leading-relaxed"></p>
+
+            <div class="mt-9 flex flex-wrap gap-4">
+              <a
+                href="#projects"
+                class="inline-flex items-center gap-2 bg-gold text-ink font-medium px-6 py-3 hover:bg-paper transition-colors"
+              >
+                <span x-text="t('projects')"></span>
+              </a>
+              <a
+                href="/docs/AbelErnestoCV25.pdf"
+                target="_blank"
+                class="inline-flex items-center gap-2 border border-paper/30 text-paper px-6 py-3 hover:border-gold hover:text-gold transition-colors"
+              >
+                <span x-text="t('resume')"></span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute bottom-6 right-5 sm:right-8 z-10 font-mono text-[11px] uppercase tracking-wide text-paper/40 flex items-center gap-2">
+          <span x-text="t('title')"></span>
+        </div>
+      </section>
+
       <script>
-        function app() {
+        function carousel() {
           return {
-            scrolled: false,
-            open: false,
-            activeSection: "home",
-            lang: "es",
-            pageVisible: true,
-
-            translations: {
-              en: {
-                skills: "Tech Skills",
-                portf: "Abel's Portfolio",
-                nav: ["Home", "About", "Education", "Skills", "Projects", "Contact"],
-                title: "Systems Engineer",
-                profile: "who am I",
-                about: `Computer Engineering student in my final year.  
-        Currently serving as financial Data Analyst.`,
-                resume: "Resume",
-                github: "Github",
-                moto: "Using technology to make procedures easier, provide accurate and reliable data for easy understanding.",
-                education: "Education",
-                certs: "Certifications & Achievements",
-                mobiledesk: "Mobile and Desktop",
-                projects: "Projects",
-                locatContact: "Location and contact",
-              },
-              es: {
-                skills: "Habilidades Tecnicas",
-                portf: "Portafolio Abel",
-                nav: ["Inicio", "Perfil", "Educación", "Habilidades", "Proyectos", "Contacto"],
-                title: "Ingeniero en sistemas",
-                profile: "Perfil profesional",
-                about: `Pasante de ingeniería en sistemas en último año.  
-                Actualmente ejerciendo como analista de datos financieros.`,
-                resume: "Currículum",
-                github: "Github",
-                moto: "Utilizando la tecnología para agilizar procesos, proveer datos precisos y simples de entender",
-                education: "Educación",
-                certs: "Certificaciones y Logros",
-                mobiledesk: "Movil y escritorio",
-                projects: "Proyectos",
-                locatContact: "Ubicacion y contacto",
-
-              },
-            },
-            education: [
-              {
-                title: "Ingeniería Informática - Universidad UTH",
-                description:
-                  "Estudios universitarios redes, seguridad, desarollo, IoT, Arquitectura, Bases de datos, Cloud",
-                date: "2021 - 2026",
-              },
-              {
-                title: "Certificación Full Stack Developer",
-                description:
-                  "Curso intensivo de desarrollo web con MERN Stack.",
-                date: "2021",
-              },
-              {
-                title: "Certificacion Java Oracle (3 Niveles)",
-                description:
-                  "Certificaciones Oracle en Java fundamentals, foundations y programming.",
-                date: "2023",
-              },
-              {
-                title: "NodeJS",
-                description: "Certificacion NodeJS para backend",
-                date: "2025",
-              },
-              {
-                title: "AWS Certification",
-                description: "Certificacion para manejar Cloud mediante AWS",
-                date: "2025",
-              },
-            ],
-
-            links: [],
-
-            init() {
-              this.detectLanguage();
-              this.setLinks();
-              this.onScroll();
-            },
-
-            detectLanguage() {
-              const saved = localStorage.getItem("lang");
-              if (saved) {
-                this.lang = saved;
-              } else {
-                const browserLang = navigator.language.slice(0, 2);
-                this.lang = browserLang === "es" ? "es" : "en";
-              }
-            },
-
-            toggleLanguage() {
-              // Fade out
-              this.pageVisible = false;
-
-              setTimeout(() => {
-                // Switch language
-                this.lang = this.lang === "es" ? "en" : "es";
-                localStorage.setItem("lang", this.lang);
-                this.setLinks();
-
-                // Fade in
-                this.pageVisible = true;
-              }, 300); // same as transition duration
-            },
-
-            setLinks() {
-              const t = this.translations[this.lang].nav;
-              this.links = [
-                { id: "home", label: t[0] },
-                { id: "about", label: t[1] },
-                { id: "education", label: t[2] },
-                { id: "skills", label: t[3] },
-                { id: "projects", label: t[4] },
-                { id: "contact", label: t[5] },
-              ];
-            },
-
-            t(key) {
-              return this.translations[this.lang][key];
-            },
-
-            onScroll() {
-              this.scrolled = window.scrollY > 10;
-              for (let link of this.links) {
-                const el = document.getElementById(link.id);
-                if (el && el.getBoundingClientRect().top <= 100) {
-                  this.activeSection = link.id;
-                }
-              }
+            currentIndex: 0,
+            images: ["images/on2.jpg", "images/on3.jpg", "images/on4.jpg"],
+            start() {
+              setInterval(() => {
+                this.currentIndex = (this.currentIndex + 1) % this.images.length;
+              }, 4500);
             },
           };
         }
       </script>
 
-      <!-- Home Section -->
-      <section
-        id="home"
-        x-data="carousel()"
-        x-init="start()"
-        x-bind:style="scrolled ? 'padding-top: 4rem' : 'padding-top: 6rem'"
-        class="min-h-screen relative"
-      >
-        <div class="absolute inset-0 z-0 overflow-hidden">
-          <template x-for="(image, index) in images" :key="index">
-            <div
-              x-show="currentIndex === index"
-              x-transition:enter="transition ease-out duration-700"
-              x-transition:enter-start="opacity-0 scale-95"
-              x-transition:enter-end="opacity-100 scale-100"
-              x-transition:leave="transition ease-in duration-500"
-              x-transition:leave-start="opacity-100 scale-100"
-              x-transition:leave-end="opacity-0 scale-95"
-              class="absolute inset-0 w-full h-full"
-            >
-              <img
-                :src="image"
-                alt="Gallery Image"
-                class="w-full h-full object-cover"
-              />
-            </div>
-          </template>
+      <!-- About -->
+      <section id="about" class="py-24 bg-panel fade-in">
+        <div class="max-w-4xl mx-auto px-5 sm:px-8">
+          <div class="grid md:grid-cols-[auto_1fr] gap-8 md:gap-16 items-start">
+            <p class="font-mono text-xs uppercase tracking-[0.25em] text-gold whitespace-nowrap" x-text="t('eyebrowAbout')"></p>
+            <div>
+              <h2 x-text="t('title')" class="font-display text-3xl sm:text-4xl font-semibold text-paper mb-6"></h2>
+              <p x-text="t('about')" class="text-lg text-paper/70 leading-relaxed max-w-xl"></p>
 
-          <div
-            class="absolute top-0 left-0 w-full h-40 z-10 pointer-events-none"
-          >
-            <!-- Light mode gradient -->
-            <div
-              class="w-full h-full bg-gradient-to-b from-white/80 to-transparent dark:hidden"
-            ></div>
-            <!-- Dark mode gradient -->
-            <div
-              class="w-full h-full bg-gradient-to-b from-black/80 to-transparent hidden dark:block"
-            ></div>
-          </div>
-          <!-- doble para mejor vista -->
-          <div
-            class="absolute top-100 left-100 w-full h-40 z-10 pointer-events-none"
-          >
-            <!-- Light mode gradient -->
-            <div
-              class="w-full h-full bg-gradient-to-b from-white/80 to-transparent dark:hidden"
-            ></div>
-            <!-- Dark mode gradient -->
-            <div
-              class="w-full h-full bg-gradient-to-b from-black/80 to-transparent hidden dark:block"
-            ></div>
-          </div>
-        </div>
-
-        <div
-          class="absolute bottom-20 right-0 z-10 m-6 bg-black bg-opacity-60 text-white p-6 rounded-lg max-w-md text-right"
-        >
-          <h1 class="text-2xl md:text-3xl font-bold text-gray-400">
-            Abel Solorzano
-          </h1>
-          <p x-text="t('moto')" class="mt-2 text-sm md:text-base"></p>
-        </div>
-      </section>
-
-      <!-- Profile Section -->
-      <section id="about" class="py-20 bg-gray-50 dark:bg-neutral-900">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-          <h2 x-text="t('profile')" class="text-1xl font-semibold mb-0 text-green-500">
-          </h2>
-          <h2 x-text="t('title')" class="text-3xl font-semibold mb-4"></h2>
-
-          <p
-            x-text="t('about')"
-            class="text-lg text-gray-600 dark:text-gray-300"
-          ></p>
-
-          <a
-            href="https://github.com/THE2201"
-            target="_blank"
-            class="relative inline-block border-2 dark:border-white border-black dark:text-white text-black font-bold bg-transparent px-6 py-3 rounded transition duration-300 hover:bg-purple-600 hover:scale-105 m-5 active:scale-90 overflow-hidden"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              class="absolute inset-0 w-full h-full text-white opacity-40 z-0"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
-      0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
-      1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
-      0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
-      .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
-      0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
-      0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            <span class="relative z-10">Github</span>
-          </a>
-
-          <a
-            href="/docs/AbelErnestoCV25.pdf"
-            type="application/pdf"
-            target="_blank"
-            class="relative inline-block border-2 dark:border-white border-black dark:text-white text-black font-bold bg-transparent px-6 py-3 rounded transition duration-300 hover:bg-gray-300 hover:text-black hover:scale-105 m-5 active:scale-90 overflow-hidden"
-          >
-            <!-- Document SVG in background -->
-            <svg
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              class="absolute inset-0 w-full h-full text-white opacity-40 z-0"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M6.75 3A2.625 2.625 0 0 0 4.125 5.625v12.75A2.625 2.625 0 0 0 6.75 21h10.125A2.625 2.625 0 0 0 19.5 18.375V9l-5.625-6H6.75ZM12 9.75a.75.75 0 0 0-.75-.75H8.25a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 .75-.75Zm-.75 2.25a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5h3Zm2.25 3a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z"
-                clip-rule="evenodd"
-              />
-            </svg>
-
-            <!-- Foreground Text -->
-            <span x-text="t('resume')" class="relative z-10"></span>
-          </a>
-        </div>
-      </section>
-
-      <!-- Education Section -->
-      <section id="education" class="py-20 dark:bg-neutral-900">
-        <div class="max-w-6xl mx-auto px-4">
-          <h2
-            x-text="t('certs')"
-            class="text-1xl font-semibold mb-0 text-green-500 text-center"
-          ></h2>
-          <h2
-            x-text="t('education')"
-            class="text-3xl font-semibold mb-16 text-center"
-          ></h2>
-
-          <!-- Timeline Container -->
-          <div class="relative">
-            <!-- Vertical Line -->
-            <div
-              class="absolute left-1/2 transform -translate-x-1/2 h-full border-l-4 dark:border-white border-gray-500"
-            ></div>
-
-            <template x-for="(item, index) in education" :key="item.title">
-              <div
-                class="mb-16 flex justify-between items-center w-full"
-                x-data="{ visible: false }"
-                x-init="
-              const observer = new IntersectionObserver(([entry]) => {
-                if (entry.isIntersecting) visible = true;
-              }, { threshold: 0.1 });
-              observer.observe($el);
-            "
-              >
-                <!-- Left Side Content -->
-                <div
-                  class="w-5/12"
-                  :class="{ 'order-1': index % 2 === 0, 'order-2': index % 2 !== 0 }"
-                  x-show="visible"
-                  :class="index % 2 === 0 ? 'animate-slide-left' : 'animate-slide-right'"
+              <div class="mt-8 flex flex-wrap gap-4">
+                <a
+                  href="https://github.com/THE2201"
+                  target="_blank"
+                  class="inline-flex items-center gap-2 border border-paper/25 text-paper px-5 py-2.5 hover:border-forest hover:text-forest transition-colors"
                 >
-                  <div
-                    class="bg-gray-200 dark:bg-black p-6 rounded-lg shadow-md border-4 border-white"
-                  >
-                    <h3
-                      class="text-xl font-bold text-green-600"
-                      x-text="item.title"
-                    ></h3>
-                    <p
-                      class="text-sm text-gray-600 dark:text-gray-300 mt-2"
-                      x-text="item.description"
-                    ></p>
-                    <span
-                      class="text-xs text-gray-400 mt-1 block"
-                      x-text="item.date"
-                    ></span>
-                  </div>
+                  <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path fill-rule="evenodd" d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z" clip-rule="evenodd" />
+                  </svg>
+                  <span x-text="t('github')"></span>
+                </a>
+                <a
+                  href="/docs/AbelErnestoCV25.pdf"
+                  target="_blank"
+                  class="inline-flex items-center gap-2 border border-paper/25 text-paper px-5 py-2.5 hover:border-forest hover:text-forest transition-colors"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path fill-rule="evenodd" d="M6.75 3A2.625 2.625 0 0 0 4.125 5.625v12.75A2.625 2.625 0 0 0 6.75 21h10.125A2.625 2.625 0 0 0 19.5 18.375V9l-5.625-6H6.75ZM12 9.75a.75.75 0 0 0-.75-.75H8.25a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 .75-.75Zm-.75 2.25a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1 0-1.5h3Zm2.25 3a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z" clip-rule="evenodd" />
+                  </svg>
+                  <span x-text="t('resume')"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section id="education" class="py-24 bg-ink fade-in">
+        <div class="max-w-4xl mx-auto px-5 sm:px-8">
+          <div class="grid md:grid-cols-[auto_1fr] gap-8 md:gap-16 mb-12">
+            <p class="font-mono text-xs uppercase tracking-[0.25em] text-gold whitespace-nowrap" x-text="t('eyebrowEdu')"></p>
+            <h2 x-text="t('education')" class="font-display text-3xl sm:text-4xl font-semibold text-paper"></h2>
+          </div>
+
+          <div class="md:pl-[7.5rem] divide-y divide-white/10 border-t border-b border-white/10">
+            <template x-for="(item, index) in education" :key="item.title">
+              <div class="grid sm:grid-cols-[5rem_1fr] gap-2 sm:gap-8 py-6">
+                <span class="font-mono text-sm text-paper/40" x-text="item.date"></span>
+                <div>
+                  <h3 class="font-display text-lg font-medium text-paper" x-text="item.title"></h3>
+                  <p class="text-paper/60 mt-1.5 leading-relaxed" x-text="item.description"></p>
                 </div>
-
-                <!-- Circulo -->
-                <div
-                  class="z-10 flex items-center justify-center w-8 h-8 bg-green-600 rounded-full border-4 border-white dark:border-white absolute left-1/2 transform -translate-x-1/2"
-                ></div>
-
-                <!-- Right Side Empty (Spacer) -->
-                <div
-                  class="w-5/12"
-                  :class="{ 'order-2': index % 2 === 0, 'order-1': index % 2 !== 0 }"
-                ></div>
               </div>
             </template>
           </div>
         </div>
       </section>
 
-      <!-- Skills Section -->
-      <section id="skills" class="py-20 bg-green-100 dark:bg-green-600">
-        <h2
-          class="text-1xl font-semibold mb-0 text-black dark:text-white text-center"
-        >
-          All-around
-        </h2>
-
-        <h2
-          x-text="t('skills')"
-          class="text-3xl font-semibold mb-12 text-center"
-        ></h2>
-
-        <!-- SKILLS GRID -->
-        <div
-          class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-1 px-4"
-        >
-          <!-- CLOUD -->
-          <div class="bg-white dark:bg-gray-800 shadow-lg p-6">
-            <h3 class="text-xl font-semibold mb-4">Cloud</h3>
-
-            <div class="grid grid-cols-3 gap-4 text-center">
-              <div x-data="{open:false}" class="cursor-pointer">
-                <div @click="open=!open" class="text-3xl">☁️</div>
-                <p x-show="open" x-transition class="text-sm mt-2">AWS</p>
-              </div>
-
-              <div x-data="{open:false}" class="cursor-pointer">
-                <div @click="open=!open" class="text-3xl">🌐</div>
-                <p x-show="open" x-transition class="text-sm mt-2">GCP</p>
-              </div>
-
-              <div x-data="{open:false}" class="cursor-pointer">
-                <div @click="open=!open" class="text-3xl">🔗</div>
-                <p x-show="open" x-transition class="text-sm mt-2">REST APIs</p>
-              </div>
-
-              <div x-data="{open:false}" class="cursor-pointer">
-                <div @click="open=!open" class="text-3xl">🐧</div>
-                <p x-show="open" x-transition class="text-sm mt-2">Linux</p>
-              </div>
-
-              <div x-data="{open:false}" class="cursor-pointer">
-                <div @click="open=!open" class="text-3xl">🗄️</div>
-                <p x-show="open" x-transition class="text-sm mt-2">SQL</p>
-              </div>
+      <!-- Skills -->
+      <section id="skills" class="py-24 bg-forestdeep fade-in">
+        <div class="max-w-4xl mx-auto px-5 sm:px-8">
+          <div class="grid md:grid-cols-[auto_1fr] gap-8 md:gap-16 mb-12">
+            <p class="font-mono text-xs uppercase tracking-[0.25em] text-gold whitespace-nowrap" x-text="t('eyebrowSkills')"></p>
+            <div>
+              <h2 x-text="t('skills')" class="font-display text-3xl sm:text-4xl font-semibold text-paper"></h2>
+              <p x-text="t('skillsSub')" class="text-paper/60 mt-3 max-w-md"></p>
             </div>
           </div>
 
-          <!-- DATA ANALYSIS -->
-          <div class="bg-white dark:bg-gray-800 shadow-lg p-6">
-            <h3 class="text-xl font-semibold mb-4">Data Analysis</h3>
-
-            <div class="grid grid-cols-3 gap-4 text-center">
-              <div x-data="{open:false}" class="cursor-pointer">
-                <div @click="open=!open" class="text-3xl">📊</div>
-                <p x-show="open" x-transition class="text-sm mt-2">Power BI</p>
-              </div>
-
-              <div x-data="{open:false}" class="cursor-pointer">
-                <div @click="open=!open" class="text-3xl">🐍</div>
-                <p x-show="open" x-transition class="text-sm mt-2">Python</p>
-              </div>
-
-              <div x-data="{open:false}" class="cursor-pointer">
-                <div @click="open=!open" class="text-3xl">📘</div>
-                <p x-show="open" x-transition class="text-sm mt-2">Excel</p>
-              </div>
+          <div class="md:pl-[7.5rem]">
+            <!-- Tabs -->
+            <div class="flex flex-wrap gap-2 mb-8 font-mono text-xs uppercase tracking-wide">
+              <template x-for="key in ['cloud', 'data', 'mobile']" :key="key">
+                <button
+                  @click="skillTab = key"
+                  :class="skillTab === key ? 'bg-gold text-forestdeep border-gold' : 'border-paper/25 text-paper/60 hover:border-paper/50 hover:text-paper'"
+                  class="border px-4 py-2 transition-colors"
+                  x-text="t('skillCats')[key]"
+                ></button>
+              </template>
             </div>
-          </div>
 
-          <!-- MOBILE DEV -->
-          <div class="bg-white dark:bg-gray-800 shadow-lg p-6">
-            <h3 class="text-xl font-semibold mb-4">Mobile Dev</h3>
-
-            <div class="grid grid-cols-3 gap-4 text-center">
-              <div x-data="{open:false}" class="cursor-pointer">
-                <div @click="open=!open" class="text-3xl">🤖</div>
-                <p x-show="open" x-transition class="text-sm mt-2">
-                  Android Studio
-                </p>
-              </div>
-
-              <div x-data="{open:false}" class="cursor-pointer">
-                <div @click="open=!open" class="text-3xl">☕</div>
-                <p x-show="open" x-transition class="text-sm mt-2">Java</p>
-              </div>
-
-              <div x-data="{open:false}" class="cursor-pointer">
-                <div @click="open=!open" class="text-3xl">⚛️</div>
-                <p x-show="open" x-transition class="text-sm mt-2">
-                  React Native
-                </p>
-              </div>
+            <!-- Skill rows -->
+            <div class="border-t border-paper/15">
+              <template x-for="skill in skillGroups[skillTab]" :key="skill.name">
+                <div class="flex items-center justify-between py-4 border-b border-paper/15">
+                  <span class="font-display text-lg text-paper" x-text="skill.name"></span>
+                  <div class="flex items-center gap-1.5" :aria-label="skill.level + ' of 4'">
+                    <template x-for="i in 4" :key="i">
+                      <span
+                        class="w-2.5 h-2.5 rounded-full"
+                        :class="i <= skill.level ? 'bg-gold' : 'bg-paper/15'"
+                      ></span>
+                    </template>
+                  </div>
+                </div>
+              </template>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Projects Section -->
-      <section id="projects" class="py-20 bg-gray-100 dark:bg-black">
-        <h2
-          x-text="t('mobiledesk')"
-          class="text-1xl font-semibold mb-0 text-green-500 text-center"
-        >
-          Mobile & desktop
-        </h2>
-        <h2
-          x-text="t('projects')"
-          class="text-3xl font-semibold mb-8 text-center"
-        ></h2>
-
-        <!-- Responsive Grid Wrapper -->
-        <div
-          class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4"
-        >
-          <!-- Card 1 -->
-          <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <img
-              src="images/on1.jpg"
-              alt="Video Music Player"
-              class="w-full h-auto"
-            />
-            <hr class="border-t border-gray-700" />
-            <div class="p-6">
-              <h2 class="text-2xl font-bold text-gray-800 mb-2">
-                VM Player Full Stack App
-              </h2>
-
-              <div
-                class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
-              >
-                <p class="text-gray-600 mb-4 text-base">
-                  Aplicación para subir y compartir música y videos, crear
-                  grupos y listas de reproducción, editar información de
-                  usuario.
-                </p>
-                <!-- Item 1 -->
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  Android Studio
-                </div>
-
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  Java
-                </div>
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  JSON
-                </div>
-
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  Firebase
-                </div>
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  MySQL
-                </div>
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  PHP API
-                </div>
-              </div>
-              <a
-                href="https://github.com/THE2201"
-                target="_blank"
-                class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 hover:text-blue-400 transition"
-              >
-                <svg viewBox="0 0 24 24" fill="purple" class="size-6">
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
-      0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
-      1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
-      0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
-      .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
-      0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
-      0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            </div>
+      <!-- Projects -->
+      <section id="projects" class="py-24 bg-panel fade-in">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+          <div class="grid md:grid-cols-[auto_1fr] gap-8 md:gap-16 mb-12">
+            <p class="font-mono text-xs uppercase tracking-[0.25em] text-gold whitespace-nowrap" x-text="t('eyebrowProjects')"></p>
+            <h2 x-text="t('projects')" class="font-display text-3xl sm:text-4xl font-semibold text-paper"></h2>
           </div>
 
-          <!-- Card 2 -->
-          <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <img src="images/on2.jpg" alt="Libreria" class="w-full h-auto" />
-            <hr class="border-t border-gray-300" />
-            <div class="p-6">
-              <h2 class="text-2xl font-bold text-gray-800 mb-2">
-                Manejo de Libreria
-              </h2>
-
-              <div
-                class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
-              >
-                <p class="text-gray-600 mb-4 text-base">
-                  Sistema de control de alquiler de libros, biblioteca de libros
-                </p>
-                <!-- Item 1 -->
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  CSS
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <template x-for="project in projects" :key="project.title">
+              <div class="group card-hover bg-ink border border-white/10 hover:border-gold/40 flex flex-col">
+                <div class="aspect-[16/10] overflow-hidden">
+                  <img :src="project.image" :alt="project.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
+                <div class="p-6 flex flex-col flex-1">
+                  <h3 class="font-display text-xl font-semibold text-paper mb-2" x-text="project.title"></h3>
+                  <p class="text-sm text-paper/60 leading-relaxed mb-4" x-text="projectDesc(project)"></p>
 
-                <!-- Item 2 -->
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  JS
-                </div>
+                  <div class="flex flex-wrap gap-1.5 mb-5 mt-auto">
+                    <template x-for="tag in project.tags" :key="tag">
+                      <span class="font-mono text-[11px] uppercase tracking-wide text-paper/50 border border-white/10 px-2 py-1" x-text="tag"></span>
+                    </template>
+                  </div>
 
-                <!-- Item 3 -->
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+                  <a
+                    :href="project.link"
+                    target="_blank"
+                    class="inline-flex items-center gap-1.5 text-sm font-medium text-gold hover:text-paper transition-colors"
                   >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  PHP
-                </div>
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  API
-                </div>
-
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  MySQL
+                    <span x-text="project.kind === 'live' ? t('viewLive') : t('viewCode')"></span>
+                    <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                      <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 0 0-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75v-4a.75.75 0 0 1 1.5 0v4A2.25 2.25 0 0 1 12.75 17h-8.5A2.25 2.25 0 0 1 2 14.75v-8.5A2.25 2.25 0 0 1 4.25 4h4a.75.75 0 0 1 0 1.5h-4Zm9.22-1.72a.75.75 0 0 1 .53-.22h4a.75.75 0 0 1 .75.75v4a.75.75 0 0 1-1.5 0V6.06l-6.72 6.72a.75.75 0 1 1-1.06-1.06L16.94 5H14a.75.75 0 0 1-.53-1.22Z" clip-rule="evenodd" />
+                    </svg>
+                  </a>
                 </div>
               </div>
-              <a
-                href="https://github.com/THE2201"
-                target="_blank"
-                class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 hover:text-blue-400 transition"
-              >
-                <svg viewBox="0 0 24 24" fill="purple" class="size-6">
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
-      0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
-      1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
-      0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
-      .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
-      0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
-      0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            </div>
+            </template>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="py-24 bg-ink fade-in">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+          <div class="grid md:grid-cols-[auto_1fr] gap-8 md:gap-16 mb-12">
+            <p class="font-mono text-xs uppercase tracking-[0.25em] text-gold whitespace-nowrap" x-text="t('eyebrowContact')"></p>
+            <h2 x-text="t('contactTitle')" class="font-display text-3xl sm:text-4xl font-semibold text-paper"></h2>
           </div>
 
-          <!-- You can add more cards here as needed -->
-          <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <img src="images/pj1.png" alt="Libreria" class="w-full h-auto" />
-            <hr class="border-t border-gray-300" />
-            <div class="p-6">
-              <h2 class="text-2xl font-bold text-gray-800 mb-2">
-                Pagina informativa farmacia
-              </h2>
-
-              <div
-                class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
-              >
-                <p class="text-gray-600 mb-4 text-base">
-                  Pagina de informacion, landing page, mi primera pagina
-                  desplegada con una idea de diseño responsive. Conexion a base
-                  de datos SQL para recibir datos de formulario de contacto
-                </p>
-                <!-- Item 1 -->
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  HTML
-                </div>
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  CSS
-                </div>
-
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  JS
-                </div>
-                <!-- Item 2 -->
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  Hosting
-                </div>
+          <div class="grid lg:grid-cols-2 gap-10 items-start md:pl-[7.5rem]">
+            <div class="space-y-5">
+              <div>
+                <p class="font-mono text-xs uppercase tracking-wide text-paper/40 mb-1.5">Ubicación</p>
+                <p class="text-lg text-paper">Siguatepeque, Comayagua, Honduras C.A.</p>
               </div>
-              <a
-                href="https://bodefarma.rf.gd/?i=1"
-                target="_blank"
-                class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 transition"
-              >
-                <svg
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1"
-                  stroke="cyan"
-                  class="size-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"
-                  />
-                </svg>
-              </a>
+              <div>
+                <p class="font-mono text-xs uppercase tracking-wide text-paper/40 mb-1.5">Email</p>
+                <a href="mailto:abelernesto2201@gmail.com" class="text-lg text-paper hover:text-gold transition-colors break-all">
+                  abelernesto2201@gmail.com
+                </a>
+              </div>
+              <div>
+                <p class="font-mono text-xs uppercase tracking-wide text-paper/40 mb-1.5">Teléfono</p>
+                <a href="tel:+50496507838" class="text-lg text-paper hover:text-gold transition-colors">
+                  (504) 9650-7838
+                </a>
+              </div>
             </div>
-          </div>
 
-          <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <img src="images/on2.jpg" alt="Libreria" class="w-full h-auto" />
-            <hr class="border-t border-gray-300" />
-            <div class="p-6">
-              <h2 class="text-2xl font-bold text-gray-800 mb-2">
-                Software Hotel Recepción
-              </h2>
-              <div
-                class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
-              >
-                <p class="text-gray-600 mb-4 text-base">
-                  Control de reservaciones y habitaciones de hotel,
-                  cancelaciones y reprogramaciones.
-                </p>
-                <!-- Item 1 -->
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  JAVA Desktop
-                </div>
-
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  MariaDB
-                </div>
-              </div>
-
-              <a
-                href="https://github.com/THE2201"
-                target="_blank"
-                class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 hover:text-blue-400 transition"
-              >
-                <svg viewBox="0 0 24 24" fill="purple" class="size-6">
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
-      0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
-      1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
-      0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
-      .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
-      0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
-      0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <img src="images/on2.jpg" alt="Libreria" class="w-full h-auto" />
-            <hr class="border-t border-gray-300" />
-            <div class="p-6">
-              <h2 class="text-2xl font-bold text-gray-800 mb-2">
-                Preaching Editor
-              </h2>
-              <div
-                class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
-              >
-                <p class="text-gray-600 mb-4 text-base">
-                  App to handle speach and preachings based on topics,
-                  subtopics, and ideas and dates.
-                </p>
-                <!-- Item 1 -->
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  React Native
-                </div>
-
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  MariaDB
-                </div>
-              </div>
-
-              <a
-                href="https://github.com/THE2201"
-                target="_blank"
-                class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 hover:text-blue-400 transition"
-              >
-                <svg viewBox="0 0 24 24" fill="purple" class="size-6">
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
-      0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
-      1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
-      0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
-      .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
-      0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
-      0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <img src="images/on2.jpg" alt="Libreria" class="w-full h-auto" />
-            <hr class="border-t border-gray-300" />
-            <div class="p-6">
-              <h2 class="text-2xl font-bold text-gray-800 mb-2">
-                Dashboard Manager
-              </h2>
-
-              <div
-                class="flex flex-wrap gap-x-4 gap-y-2 text-orange-600 text-xl mb-4"
-              >
-                <p class="text-gray-600 mb-4 text-base">
-                  Inscripciones, manejo de pagos, landing y dashboard
-                </p>
-                <!-- Item 2 -->
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  JS
-                </div>
-
-                <!-- Item 1 -->
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  Tailwind
-                </div>
-
-                <!-- Item 3 -->
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  PHP API
-                </div>
-
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  AWS
-                </div>
-
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  Mariadb
-                </div>
-
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  Linux Server
-                </div>
-
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  Apache
-                </div>
-                <div
-                  class="flex items-center bg-gray-200 rounded p-1 text-sm font-bold"
-                >
-                  <svg
-                    class="w-5 h-5 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a1 1 0 011 1v1h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v2h1.5a1 1 0 110 2H11v1a1 1 0 11-2 0v-1H7.5a1 1 0 110-2H9v-2H7.5a1 1 0 110-2H9V6H7.5a1 1 0 110-2H9V3a1 1 0 011-1z"
-                    />
-                  </svg>
-                  Composer
-                </div>
-              </div>
-              <a
-                href="https://github.com/THE2201"
-                target="_blank"
-                class="flex justify-center bg-gray-100 text-black px-5 py-2 rounded-md hover:bg-gray-300 hover:text-blue-400 transition"
-              >
-                <svg viewBox="0 0 24 24" fill="purple" class="size-6">
-                  <path
-                    fill-rule="evenodd"
-                    d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
-            0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729
-            1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93
-            0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3
-            .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22
-            0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222
-            0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </a>
+            <div class="border border-white/10">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d33542.608860230204!2d-87.83599375!3d14.597951899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f6595a3b6d8afe3%3A0x3dab665e36cbd548!2sSiguatepeque%2C%20Comayagua!5e1!3m2!1ses-419!2shn!4v1750182107519!5m2!1ses-419!2shn"
+                width="100%"
+                height="360"
+                style="border: 0; filter: grayscale(1) invert(0.92) contrast(0.85);"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Contact Section -->
-      <section id="contact" class="py-20 bg-gray-100 dark:bg-neutral-900">
-        <div
-          class="max-w-7xl mx-auto px-4 flex flex-col-reverse lg:flex-row items-center gap-8"
-        >
-          <!-- Contact Form -->
-          <div class="w-full lg:w-1/2">
-            <h2 x-text="t('locatContact')" class="text-4xl font-semibold text-right lg:text-right mb-6">
-            </h2>
+      <footer class="bg-panel border-t border-white/10 py-10">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p class="font-mono text-xs text-paper/40" x-text="t('footerNote')"></p>
 
-            <h2 class="text-1xl text-right lg:text-right mb-6 text-orange-600">
-              Siguatepeque Comayagua, Honduras - CA
-            </h2>
-
-            <a href="mailto:abelernesto2201@gmail.com">
-              <h2 class="text-2xl text-right lg:text-right mb-6 text-gray-400">
-                abelernesto2201@<span class="text-blue-500">g</span
-                ><span class="text-red-500">m</span
-                ><span class="text-yellow-600">a</span
-                ><span class="text-blue-500">i</span
-                ><span class="text-green-600">l</span>.com
-              </h2>
-            </a>
-
-            <a href="tel:+50496507838">
-              <h2 class="text-1 xl text-right lg:text-right mb-6 text-gray-400">
-                (504) 9650-7838
-              </h2>
-            </a>
-          </div>
-
-          <!-- Google Map -->
-          <div class="w-full lg:w-1/2">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d33542.608860230204!2d-87.83599375!3d14.597951899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f6595a3b6d8afe3%3A0x3dab665e36cbd548!2sSiguatepeque%2C%20Comayagua!5e1!3m2!1ses-419!2shn!4v1750182107519!5m2!1ses-419!2shn"
-              width="100%"
-              height="450"
-              style="border: 0"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              class="rounded shadow"
-            ></iframe>
-          </div>
-        </div>
-
-        <div
-          class="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-8 mt-5"
-        ></div>
-      </section>
-
-      <footer
-        class="bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 py-10 mt-16"
-      >
-        <div class="max-w-7xl mx-auto px-4 text-center">
-          <!-- Social Icons -->
-          <div class="flex justify-center space-x-6 mb-6">
-            <!-- Facebook -->
-            <a
-              href="#"
-              aria-label="Facebook"
-              class="hover:text-blue-600 transition"
-            >
-              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 
-          12c0 4.99 3.66 9.12 8.44 
-          9.88v-6.99H7.9v-2.89h2.54V9.41c0-2.5 
-          1.49-3.89 3.77-3.89 1.09 0 2.23.2 
-          2.23.2v2.45h-1.25c-1.23 0-1.61.76-1.61 
-          1.54v1.86h2.74l-.44 2.89h-2.3v6.99C18.34 
-          21.12 22 16.99 22 12z"
-                />
+          <div class="flex items-center gap-5 text-paper/50">
+            <a href="https://github.com/THE2201" target="_blank" aria-label="Github" class="hover:text-gold transition-colors">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.997.108-.776.418-1.305.76-1.605-2.665-.305-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.435.375.825 1.102.825 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z" clip-rule="evenodd" />
               </svg>
             </a>
-
-            <!-- Instagram -->
-            <a
-              href="#"
-              aria-label="Instagram"
-              class="hover:text-pink-500 transition"
-            >
-              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M12 2.2c3.2 0 3.584.012 4.85.07 1.17.056 1.96.24 
-          2.41.403a4.79 4.79 0 0 1 
-          1.73 1.13c.492.492.865 1.083 
-          1.13 1.73.163.45.347 1.24.403 
-          2.41.058 1.27.07 1.65.07 
-          4.85s-.012 3.584-.07 
-          4.85c-.056 1.17-.24 1.96-.403 
-          2.41a4.79 4.79 0 0 1-1.13 
-          1.73 4.79 4.79 0 0 1-1.73 
-          1.13c-.45.163-1.24.347-2.41.403-1.27.058-1.65.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.056-1.96-.24-2.41-.403a4.79 4.79 0 0 1-1.73-1.13 4.79 4.79 0 0 1-1.13-1.73c-.163-.45-.347-1.24-.403-2.41C2.212 15.584 2.2 15.2 2.2 12s.012-3.584.07-4.85c.056-1.17.24-1.96.403-2.41a4.79 4.79 0 0 1 1.13-1.73 4.79 4.79 0 0 1 1.73-1.13c.45-.163 1.24-.347 2.41-.403C8.416 2.212 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.507.012-4.737.068-.96.045-1.482.21-1.83.35a3.04 3.04 0 0 0-1.11.726 3.04 3.04 0 0 0-.726 1.11c-.14.348-.305.87-.35 1.83-.056 1.23-.068 1.587-.068 4.737s.012 3.507.068 4.737c.045.96.21 1.482.35 1.83.18.45.423.836.726 1.11.348.14.87.305 1.83.35 1.23.056 1.587.068 4.737.068s3.507-.012 4.737-.068c.96-.045 1.482-.21 1.83-.35a3.04 3.04 0 0 0 1.11-.726 3.04 3.04 0 0 0 .726-1.11c.14-.348.305-.87.35-1.83.056-1.23.068-1.587.068-4.737s-.012-3.507-.068-4.737c-.045-.96-.21-1.482-.35-1.83a3.04 3.04 0 0 0-.726-1.11 3.04 3.04 0 0 0-1.11-.726c-.348-.14-.87-.305-1.83-.35-1.23-.056-1.587-.068-4.737-.068zM12 5.838A6.162 6.162 0 1 0 12 18.162 6.162 6.162 0 1 0 12 5.838zm0 10.125a3.963 3.963 0 1 1 0-7.926 3.963 3.963 0 0 1 0 7.926zm5.925-11.14a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"
-                />
+            <a href="mailto:abelernesto2201@gmail.com" aria-label="Email" class="hover:text-gold transition-colors">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" />
               </svg>
             </a>
-
-            <!-- Google Maps -->
-            <a
-              href="#"
-              aria-label="Maps"
-              class="hover:text-green-600 transition"
-            >
-              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M12 2C8.14 2 5 5.14 5 
-          9c0 5.25 7 13 7 
-          13s7-7.75 7-13c0-3.86-3.14-7-7-7zm0 
-          9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 
-          6.5 12 6.5 14.5 7.62 14.5 9 
-          13.38 11.5 12 11.5z"
-                />
-              </svg>
-            </a>
-
-            <!-- Phone -->
-            <a
-              href="tel:+1234567890"
-              aria-label="Phone"
-              class="hover:text-blue-400 transition"
-            >
-              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M6.62 10.79a15.093 
-          15.093 0 0 0 6.59 6.59l2.2-2.2c.27-.27.67-.36 
-          1.02-.24 1.12.37 2.33.57 
-          3.57.57.55 0 1 .45 1 
-          1v3.5c0 .55-.45 1-1 
-          1C10.07 21 3 13.93 3 
-          5.5c0-.55.45-1 1-1H7.5c.55 0 
-          1 .45 1 1 0 1.25.2 2.45.57 
-          3.57.11.35.03.74-.25 1.02l-2.2 
-          2.2z"
-                />
-              </svg>
-            </a>
-
-            <!-- Mail -->
-            <a
-              href="mailto:contact@.org"
-              aria-label="Email"
-              class="hover:text-red-400 transition"
-            >
-              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M20 4H4c-1.1 0-2 .9-2 
-          2v12c0 1.1.9 2 2 
-          2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 
-          4-8 5-8-5V6l8 5 8-5v2z"
-                />
+            <a href="tel:+50496507838" aria-label="Phone" class="hover:text-gold transition-colors">
+              <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6.62 10.79a15.093 15.093 0 0 0 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1v3.5c0 .55-.45 1-1 1C10.07 21 3 13.93 3 5.5c0-.55.45-1 1-1H7.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
               </svg>
             </a>
           </div>
-
-          <!-- Footer Text -->
-          <p class="text-sm text-gray-500 dark:text-gray-400">
-            &copy; 2025 Abel Portfolio. All rights reserved.
-          </p>
         </div>
       </footer>
-
-      <!-- Carousel JS -->
-      <script>
-        function carousel() {
-          return {
-            currentIndex: 0,
-            images: [
-              "./images/on2.jpg",
-              "./images/on3.jpg",
-              "./images/on4.jpg",
-            ],
-            start() {
-              setInterval(() => {
-                this.currentIndex =
-                  (this.currentIndex + 1) % this.images.length;
-              }, 3000);
-            },
-          };
-        }
-      </script>
     </div>
   </body>
 </html>
